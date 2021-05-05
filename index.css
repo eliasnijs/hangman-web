@@ -1,11 +1,8 @@
 :root {
-    --color1: #1b91f1;
-    --color2: #ffffff;
-    --color3: #ff5576;
-
     --color1: #1bdff1;
     --color2: #ffffff;
     --color3: #444444;
+    /*--color1: #fd946c;*/
 }
 
 ::selection {
@@ -19,7 +16,6 @@ html, body {
     margin: 0;
     padding: 0;
 }
-
 
 .title {
     display: flex;
@@ -61,14 +57,18 @@ h1 {
     padding-right: 1%;
 }
 
+.left-tab .test:hover {
+    color: var(--color2);
+    background: var(--color1);
+}
+
 .reload-button {
     margin: 0;
     width: 56px;
     height: 56px;
     display: flex;
     justify-content: center;
-    color: var(--color2);
-    background: var(--color1);
+    color: var(--color3);
     font-size:20px;
     border-radius: 3px;
     border: 0;
@@ -77,7 +77,7 @@ h1 {
 }
 
 .left-tab .reload-button:hover {
-    background: var(--color1);
+    background: var(--color1);border-radius: 90px;
 }
 
 .reload-circle {
@@ -190,10 +190,9 @@ h1 {
 }
 
 .button-inactive {
-    color: var(--color2);
+    color: var(--color1);
     background: var(--color2);
 }
-
 
 .right {
     width: 25%;
@@ -207,11 +206,7 @@ h1 {
     font-weight: bold;
 }
 
-
-
-
-
-.gallows-base {
+.gallows-0 {
     position: absolute;
     margin-top: 250px;
     width: 175px;
@@ -219,7 +214,7 @@ h1 {
     background: var(--color3);
 }
 
-.gallows-pole {
+.gallows-1 {
     position: absolute;
     margin-left: 146px;
     width: 30px;
@@ -227,14 +222,14 @@ h1 {
     background: var(--color3);
 }
 
-.gallows-beam {
+.gallows-2 {
     position: absolute;
     width: 175px;
     height: 27px;
     background: var(--color3);
 }
 
-.gallows-chord {
+.gallows-3 {
     position: absolute;
     margin-right: 45px;
     width: 8px;
@@ -242,17 +237,17 @@ h1 {
     background: var(--color3);
 }
 
-.gallows-head {
+.gallows-4 {
     position: absolute;
     margin-top: 50px;
     margin-right: 45px;
     width: 50px;
     height: 55px;
-    border-radius: 90px 90px 70px 70px;
+    border-radius: 90px 90px 80px 80px;
     background: var(--color3);
 }
 
-.gallows-body {
+.gallows-5 {
     position: absolute;
     margin-top: 100px;
     margin-right: 45px;
@@ -261,27 +256,7 @@ h1 {
     background: var(--color3);
 }
 
-.gallows-arm-left {
-    position: absolute;
-    margin-top: 100px;
-    margin-right: 80px;
-    width: 8px;
-    height: 50px;
-    background: var(--color3);
-    transform: rotate(135deg);
-}
-
-.gallows-arm-left {
-    position: absolute;
-    margin-top: 100px;
-    margin-right: 80px;
-    width: 8px;
-    height: 50px;
-    background: var(--color3);
-    transform: rotate(135deg);
-}
-
-.gallows-arm-right {
+.gallows-6 {
     position: absolute;
     margin-top: 100px;
     margin-right: 5px;
@@ -291,17 +266,18 @@ h1 {
     transform: rotate(-135deg);
 }
 
-.gallows-leg-left {
+.gallows-7 {
     position: absolute;
-    margin-top: 185px;
+    margin-top: 100px;
     margin-right: 80px;
     width: 8px;
     height: 50px;
     background: var(--color3);
-    transform: rotate(-135deg);
+    transform: rotate(135deg);
 }
 
-.gallows-leg-right {
+
+.gallows-8 {
     position: absolute;
     margin-top: 185px;
     margin-right: 5px;
@@ -309,4 +285,14 @@ h1 {
     height: 50px;
     background: var(--color3);
     transform: rotate(135deg);
+}
+
+.gallows-9 {
+    position: absolute;
+    margin-top: 185px;
+    margin-right: 80px;
+    width: 8px;
+    height: 50px;
+    background: var(--color3);
+    transform: rotate(-135deg);
 }
