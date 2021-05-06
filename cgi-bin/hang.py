@@ -67,7 +67,10 @@ def kiezen(w1, w2, w3):
             key = i
             count = c_count
 
-    return key
+    values = list(corresponding[key])
+    word = values[random.randint(0, len(values) - 1)]
+
+    return key, word
 
 
 # get longest and shortest word
@@ -95,9 +98,11 @@ def first_pattern():
 
 # Advance a step
 def advance(pattern_prev, letters_prev, expansion):
-    pattern = kiezen(pattern_prev, letters_prev, expansion)
+    keuze = kiezen(pattern_prev, letters_prev, expansion)
+    pattern = keuze[0]
     letters = letters_prev + expansion
     found = 0
+    word = keuze[1]
     if pattern_prev == pattern:
         found = 1
-    return pattern, letters, found
+    return pattern, letters, found, word

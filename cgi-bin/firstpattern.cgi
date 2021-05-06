@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from gallows import first_pattern
+from hang import first_pattern
 import cgi
 import simplejson as json
 
