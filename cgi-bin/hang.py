@@ -68,41 +68,38 @@ def kiezen(w1, w2, w3):
             count = c_count
 
     values = list(corresponding[key])
+    print(values)
     word = values[random.randint(0, len(values) - 1)]
 
     return key, word
 
 
-# get longest and shortest word
-def longest():
-    l = 0
-    for word in open("resources/woorden.txt", 'r'):
-        cl = len(word)
-        if cl > l:
-            l = cl
-    s = l
-    for word in open("resources/woorden.txt", 'r'):
-        cs = len(word)
-        if cs < s:
-            s = cs
+# get random line
+def random_line():
+    f = open("resources/woorden.txt")
+    line = next(f)
+    for num, l in enumerate(f, 2):
+        if random.randrange(num):
+            continue
+        line = l
+    f.close()
 
-    return s, l
+    return line
 
 
+# length probability {5: 2%, 6: 4%, 7: 7%, 8: 10%, 9: 13%, 10: 14%, 11: 14%, 12: 12%, 13: 10%, 14: 8%, 15: 6%}
 # generate random length
 def first_pattern():
-    lengths = longest()
-    size = random.randint(lengths[0], lengths[1])
-    return "".join(["_" for x in range(size)])
+    return "".join(["_" for x in range(len(random_line()) - 1)])
 
 
 # Advance a step
 def advance(pattern_prev, letters_prev, expansion):
     keuze = kiezen(pattern_prev, letters_prev, expansion)
+
     pattern = keuze[0]
     letters = letters_prev + expansion
-    found = 0
+    found = (pattern_prev == pattern)
     word = keuze[1]
-    if pattern_prev == pattern:
-        found = 1
+
     return pattern, letters, found, word

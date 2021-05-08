@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from hang import first_pattern
-import cgi
 import simplejson as json
 
 # Lees data verstuurd door JavaScript
