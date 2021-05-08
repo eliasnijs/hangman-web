@@ -1,10 +1,12 @@
 function reset() {
     setHtml();
-    firstPattern();
+    setFirstPattern();
     setHang(0);
 }
 
 function setHtml() {
+    document.getElementById("buttons-top").innerHTML = "";
+    document.getElementById("buttons-bottom").innerHTML = "";
     const buttons = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
     let divs = []
     for (let index = 0; index < 26; index += 1) {
@@ -29,7 +31,7 @@ function addListeners() {
     document.querySelector("#button-audio").addEventListener("click", mute)
 }
 
-function firstPattern() {
+function setFirstPattern() {
     fetch(`./cgi-bin/firstpattern.cgi`)
         .then(antwoord => antwoord.json())
         .then(data => {
@@ -92,6 +94,6 @@ function mute() {
     }
 }
 
-window.onload = function () {
+window.onload = function() {
     reset();
 };
