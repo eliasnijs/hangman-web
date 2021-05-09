@@ -1,12 +1,12 @@
 function reset() {
     setHtml();
-    setFirstPattern();
-    setHang(0);
 }
 
 function setHtml() {
     document.getElementById("buttons-top").innerHTML = "";
     document.getElementById("buttons-bottom").innerHTML = "";
+    document.getElementById("buttons-top").removeEventListener("click", reset);
+    document.getElementById("word").classList.value = "word";
     const buttons = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
     let divs = []
     for (let index = 0; index < 26; index += 1) {
@@ -20,9 +20,9 @@ function setHtml() {
         document.getElementById("buttons-top").innerHTML = divs.slice(0, 13).join("");
         document.getElementById("buttons-bottom").innerHTML = divs.slice(13, 26).join("");
     }
-    document.getElementById("word").classList.value = "word";
-    document.getElementById("buttons-top").removeEventListener("click", reset);
     addListeners();
+    setFirstPattern();
+    setHang(0);
 }
 
 function addListeners() {
@@ -48,6 +48,9 @@ function setHang(length) {
 }
 
 function buttonPressed(event) {
+    event.target.removeEventListener("click", buttonPressed);
+    document.getElementById("audio-button").currentTime = 0;
+    document.getElementById("audio-button").play();
     const p = document.getElementById("word").innerHTML.toUpperCase();
     const e = event.target.innerHTML;
     const l = getLetters();
@@ -62,7 +65,6 @@ function buttonPressed(event) {
                 endgame(data["word"].toLowerCase());
             }
         })
-    event.target.removeEventListener("click", buttonPressed);
     event.target.classList.value = "button-inactive";
 }
 
@@ -86,7 +88,7 @@ function endgame(word) {
 }
 
 function mute() {
-    let a = document.querySelector("#audio");
+    let a = document.getElementById("audio-music");
     if (a.paused) {
         a.play();
     } else {
