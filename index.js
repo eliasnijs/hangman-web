@@ -1,90 +1,60 @@
+/* Er wordt gebruik gemaakt van globale variabelen ipv van de data uit html te halen
+*  om de snelheid te optimaliseren.
+* */
+let word = "";
+let usedLetters= "_";
+let wrong = 0;
+
 function reset() {
-    setHtml();
+    usedLetters= "_";
+    wrong = 0;
+    word = "";
+    initiateGame();
 }
 
-function setHtml() {
-    document.getElementById("buttons-top").innerHTML = "";
-    document.getElementById("buttons-bottom").innerHTML = "";
-    document.getElementById("buttons-top").removeEventListener("click", reset);
-    document.getElementById("word").classList.value = "word";
-    const buttons = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
-    let divs = []
-    for (let index = 0; index < 26; index += 1) {
-        divs.push(`<button class=\"button-active\">` + buttons[index] + `</button>`);
-    }
-    const w = document.documentElement.clientWidth || window.innerWidth;
-    if (w <= 720) {
-        document.getElementById("buttons-top").innerHTML = divs.join("");
-    }
-    else {
-        document.getElementById("buttons-top").innerHTML = divs.slice(0, 13).join("");
-        document.getElementById("buttons-bottom").innerHTML = divs.slice(13, 26).join("");
-    }
-    addListeners();
-    setFirstPattern();
-    setHang(0);
-}
-
-function addListeners() {
-    document.querySelectorAll(".button-active").forEach(b => b.addEventListener("click", buttonPressed));
-    document.querySelectorAll(".reload").forEach(b => b.addEventListener("click", reset));
-    document.querySelector("#button-audio").addEventListener("click", mute)
-}
-
-function setFirstPattern() {
+function initiateGame() {
     fetch(`./cgi-bin/firstpattern.cgi`)
         .then(antwoord => antwoord.json())
         .then(data => {
-            document.getElementById("word").innerHTML = data["pattern"];
-        });
-}
-
-function setHang(length) {
-    let divs = [];
-    for (let i = 0; i <= length; i += 1) {
-        divs.push(`<div class="hang hang-` + i + `"></div>`);
-    }
-    document.getElementById("hang").innerHTML = divs.join("");
+            word =  data["pattern"];
+        })
+        .then(setHtml)
+        .then(setListeners);
 }
 
 function buttonPressed(event) {
+
+    assert(event !== undefined, "AssertionError: invalid button")
+
     event.target.removeEventListener("click", buttonPressed);
-    document.getElementById("audio-button").currentTime = 0;
-    document.getElementById("audio-button").play();
-    const p = document.getElementById("word").innerHTML.toUpperCase();
+    event.target.classList.value = "button-inactive";
+
+    const p = word.toUpperCase();
+    const l = usedLetters;
     const e = event.target.innerHTML;
-    const l = getLetters();
+
+    assert(!usedLetters.includes(e), "AssertionError: letter was already used")
+
     fetch(`cgi-bin/buttonpressed.cgi?pattern=${p}&letters=${l}&expansion=${e}`)
         .then(antwoord => antwoord.json())
         .then(data => {
-            document.getElementById("word").innerHTML = data["pattern"].toLowerCase();
-            if (data["wrong"]) {
-                setHang(document.querySelectorAll(".hang").length)
-            }
-            if (document.querySelectorAll(".hang").length === 10 || !/_/.test(data["pattern"].toLowerCase())) {
-                endgame(data["word"].toLowerCase());
+            word = data["pattern"].toLowerCase();
+            wrong += (data["wrong"])? 1 : 0;
+            usedLetters += e;
+            update();
+            if (wrong === 9 || !/_/.test(data["pattern"].toLowerCase())) {
+                console.log("true")
+                end(data["word"].toLowerCase());
             }
         })
-    event.target.classList.value = "button-inactive";
+        .catch(err => {throw err});
+
+    playAudioEffect();
 }
 
-function getLetters() {
-    let letters = "_"
-    document.querySelectorAll(".button-inactive").forEach(
-        o => letters += o.innerHTML
-    )
-    return letters;
-}
-
-function endgame(word) {
-    const message = (document.querySelectorAll(".hang").length !== 10) ? "victory" : "defeat";
-    document.getElementById("word").innerHTML = message;
-    document.getElementById("word").classList.add(message)
-    document.getElementById("buttons-top").innerHTML =
-        `<h3 class=\"reload\">The correct word was <span class=\"endgame-word\">\"` + word +
-        `\"</span>. Press me to play again!</h3>`;
-    document.getElementById("buttons-top").addEventListener("click", reset);
-    document.getElementById("buttons-bottom").innerHTML = "";
+function playAudioEffect(){
+    document.getElementById("audio-button").currentTime = 0;
+    document.getElementById("audio-button").play();
 }
 
 function mute() {
@@ -96,6 +66,54 @@ function mute() {
     }
 }
 
+// -----
+function setHtml() {
+    const buttons = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+    let divs = []
+    for (let index = 0; index < 26; index += 1) {
+        divs.push(`<button class=\"button-active\">` + buttons[index] + `</button>`);
+    }
+    document.getElementById("buttons-top").innerHTML = divs.slice(0, 13).join("");
+    document.getElementById("buttons-bottom").innerHTML = divs.slice(13, 26).join("");
+    document.getElementById("end").innerHTML = "";
+    update();
+}
+
+function setListeners(){
+    document.querySelectorAll(".button-active").forEach(b => b.addEventListener("click", buttonPressed));
+    document.querySelectorAll(".reload").forEach(b => b.addEventListener("click", reset));
+    document.querySelector("#button-audio").addEventListener("click", mute);
+}
+
+function setWord(){
+    document.getElementById("word").innerHTML = word;
+}
+
+function setHang() {
+    let divs = [];
+    for (let i = 0; i <= wrong; i += 1) {
+        divs.push(`<div class="hang hang-` + i + `"></div>`);
+    }
+    document.getElementById("hang").innerHTML = divs.join("");
+}
+
+function end(correctWord) {
+    document.getElementById("end").innerHTML =
+        `<h3>Het correcte woord was ` + correctWord + `.</h3>`;
+    document.querySelectorAll(".buttons-row").forEach(o => o.innerHTML = "");
+}
+
+function update() {
+    setWord();
+    setHang();
+}
+
 window.onload = function() {
     reset();
 };
+
+function assert(c,m){
+    if (!c) {
+        throw {Error: m}
+    }
+}

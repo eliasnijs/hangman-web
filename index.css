@@ -47,23 +47,10 @@ h1 {
     letter-spacing: 5px;
 }
 
-.endgame-word {
-    margin-top: 9px;
-    color: var(--color3);
-}
-
 h3 {
     margin: 0;
     font-size: 24px;
     color: var(--color3);
-}
-
-.victory {
-    color: var(--color4) !important;
-}
-
-.defeat {
-    color: var(--color5) !important;
 }
 
 .main {
