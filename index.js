@@ -107,7 +107,6 @@ window.onload = function() {
     reset();
 };
 
-// De require('assert') werkt niet in de browser. Er is dus een functie assert die hetzelfde doet.
 function assert(c,m){
     if (!c) {
         throw {error: m}
