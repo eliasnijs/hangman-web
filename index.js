@@ -36,7 +36,7 @@ function buttonPressed(event) {
         .then(antwoord => antwoord.json())
         .then(data => {
             if (data["error"] !== undefined) {
-                throw data["error"]
+                throw {error: data["error"]}
             }
             word = data["pattern"].toLowerCase();
             wrong += (data["wrong"])? 1 : 0;
