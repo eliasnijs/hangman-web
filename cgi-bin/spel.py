@@ -63,6 +63,9 @@ def move(w1, w2, w3):
         if len(word) > len(pattern):
             break
 
+    if not len(corresponding) > 0:
+        return None
+
     count = 0
     keys = []
     for i in corresponding:
@@ -97,21 +100,33 @@ def random_line():
 
 # ---------------------------------------------------------------
 def first_pattern():
-    return random_line()
+    return {"pattern": random_line()}
 
 
 def advance(pattern_prev, letters_prev, expansion):
-    assert not expansion.isdigit(), "AssertionError: ongeldige letter"
-    assert not any(x.isdigit() for x in letters_prev), "AssertionError: ongeldig eerder gebruikte letter"
-    assert not any(x.isdigit() for x in pattern_prev), "AssertionError: ongeldig patroon"
-    assert 5 <= len(pattern_prev) <= 15, "AssertionError: ongeldig patroon"
-    assert expansion not in (letters_prev or pattern_prev), "AssertionError: deze letter was al gebruikt"
+    if len(expansion) != 1:
+        return {"error": "ongeldige letter"}
+
+    if expansion.isdigit():
+        return {"error": "ongeldige letter"}
+
+    if any(x.isdigit() for x in letters_prev):
+        return {"error": "ongeldige letter"}
+
+    if any(x.isdigit() for x in pattern_prev):
+        return {"error": "ongeldig patroon"}
+
+    if expansion in (letters_prev or pattern_prev):
+        return {"error": "deze letter was al gebruikt"}
 
     keuze = move(pattern_prev, letters_prev, expansion)
+
+    if not keuze:
+        return {"error": "geen corresponderende patronen gevonden"}
 
     pattern = keuze[0]
     letters = letters_prev + expansion
     found = (pattern_prev == pattern)
     word = keuze[1]
 
-    return pattern, letters, found, word
+    return {"pattern": pattern, "letters": letters, "wrong": found, "word": word}

@@ -12,9 +12,8 @@ expansion = parameters.getvalue('expansion');
 
 # Bereken te verzenden data
 out = advance(pattern, letters, expansion)
-nieuwe_data = {"pattern": out[0], "letters": out[1], "wrong": out[2], "word": out[3]}
 
 # Stuur antwoord terug
 print("Content-Type: application/json")
 print() # Lege lijn na headers
-print(json.dumps(nieuwe_data))
+print(json.dumps(out))

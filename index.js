@@ -35,6 +35,9 @@ function buttonPressed(event) {
     fetch(`cgi-bin/buttonpressed.cgi?pattern=${p}&letters=${l}&expansion=${e}`)
         .then(antwoord => antwoord.json())
         .then(data => {
+            if (data["error"] !== undefined) {
+                throw data["error"]
+            }
             word = data["pattern"].toLowerCase();
             wrong += (data["wrong"])? 1 : 0;
             usedLetters += e;

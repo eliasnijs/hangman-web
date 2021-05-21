@@ -32,13 +32,16 @@ Dit zorgt dus veel een redelijk grote optimalisatie.
 
 ### 3. [index.js](index.js)
 
-Bij het js script zijn er 2 kleine opmerkingen. 
+Bij het js script zijn er 3 kleine opmerkingen. 
 
 De eerste is dat er globale variabelen gebruikt worden. Eerst haalde ik mijn data
 op op basis van wat er in de html zat. Ik heb eindelijk toch gekozen om globale variabelen aan te maken omwille van de snelheidsoptimalisatie.
 
 De tweede is dat de `const assert = require('assert')` niet werkte in de browser. 
 Ik heb dus zelf een methode aangemaakt die hiervoor zorgt. (Deze methode staat op het einde van het bestand.)
+
+De laatste opmerking is dat als mijn json een error object teruggeeft, ik de error ook effectief throw. Het was niet meteen duidelijk
+of dit de bedoeling was dus ben ik gaan kijken naar wat andere sites deden en heb dan op basis daarvan een keuze gemaakt.
 
 ### 4. html en css
 
