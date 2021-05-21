@@ -1,6 +1,3 @@
-/* Er wordt gebruik gemaakt van globale variabelen ipv van de data uit html te halen
-*  om de snelheid te optimaliseren.
-* */
 let word = "";
 let usedLetters= "_";
 let wrong = 0;
@@ -24,7 +21,7 @@ function initiateGame() {
 
 function buttonPressed(event) {
 
-    assert(event !== undefined, "AssertionError: invalid button")
+    assert(event !== undefined, "AssertionError: ongeldige knop")
 
     event.target.removeEventListener("click", buttonPressed);
     event.target.classList.value = "button-inactive";
@@ -33,7 +30,7 @@ function buttonPressed(event) {
     const l = usedLetters;
     const e = event.target.innerHTML;
 
-    assert(!usedLetters.includes(e), "AssertionError: letter was already used")
+    assert(!usedLetters.includes(e), "AssertionError: ongeldige letter, deze letter was al gebruikt")
 
     fetch(`cgi-bin/buttonpressed.cgi?pattern=${p}&letters=${l}&expansion=${e}`)
         .then(antwoord => antwoord.json())
@@ -43,7 +40,6 @@ function buttonPressed(event) {
             usedLetters += e;
             update();
             if (wrong === 9 || !/_/.test(data["pattern"].toLowerCase())) {
-                console.log("true")
                 end(data["word"].toLowerCase());
             }
         })
@@ -73,8 +69,7 @@ function setHtml() {
     for (let index = 0; index < 26; index += 1) {
         divs.push(`<button class=\"button-active\">` + buttons[index] + `</button>`);
     }
-    document.getElementById("buttons-top").innerHTML = divs.slice(0, 13).join("");
-    document.getElementById("buttons-bottom").innerHTML = divs.slice(13, 26).join("");
+    document.getElementById("buttons").innerHTML = divs.join("");
     document.getElementById("end").innerHTML = "";
     update();
 }
@@ -112,8 +107,9 @@ window.onload = function() {
     reset();
 };
 
+// De require('assert') werkt niet in de browser. Er is dus een functie assert die hetzelfde doet.
 function assert(c,m){
     if (!c) {
-        throw {Error: m}
+        throw {error: m}
     }
 }

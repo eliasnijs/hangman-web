@@ -51,22 +51,29 @@ def move(w1, w2, w3):
 
     corresponding = {}
 
-    for word in open("resources/woorden.txt", 'r'):
+    for word in open("resources/woorden_sorted.txt", 'r'):
         word = word.strip()
-        if check(word, pattern, letters_used):
-            new_pattern = complete(word, pattern, expansion)
-            if new_pattern in corresponding:
-                corresponding[new_pattern].add(word)
-            else:
-                corresponding[new_pattern] = {word}
+        if len(word) == len(pattern):
+            if check(word, pattern, letters_used):
+                new_pattern = complete(word, pattern, expansion)
+                if new_pattern in corresponding:
+                    corresponding[new_pattern].add(word)
+                else:
+                    corresponding[new_pattern] = {word}
+        if len(word) > len(pattern):
+            break
 
     count = 0
-    key = ""
+    keys = []
     for i in corresponding:
         c_count = len(corresponding[i])
         if c_count > count:
-            key = i
+            keys = [i]
             count = c_count
+        elif c_count == count:
+            keys.append(i)
+
+    key = random.choice(keys)
 
     values = list(corresponding[key])
     word = values[random.randint(0, len(values) - 1)]
@@ -77,7 +84,7 @@ def move(w1, w2, w3):
 # ---------------------------------------------------------------
 # get random line
 def random_line():
-    f = open("resources/woorden.txt")
+    f = open("resources/woorden_sorted.txt")
     line = next(f)
     for num, l in enumerate(f, 2):
         if random.randrange(num):
@@ -94,6 +101,12 @@ def first_pattern():
 
 
 def advance(pattern_prev, letters_prev, expansion):
+    assert not expansion.isdigit(), "AssertionError: ongeldige letter"
+    assert not any(x.isdigit() for x in letters_prev), "AssertionError: ongeldig eerder gebruikte letter"
+    assert not any(x.isdigit() for x in pattern_prev), "AssertionError: ongeldig patroon"
+    assert 5 <= len(pattern_prev) <= 15, "AssertionError: ongeldig patroon"
+    assert expansion not in (letters_prev or pattern_prev), "AssertionError: deze letter was al gebruikt"
+
     keuze = move(pattern_prev, letters_prev, expansion)
 
     pattern = keuze[0]

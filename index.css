@@ -12,7 +12,7 @@
 }
 
 ::selection {
-    background: var(--color3);
+    background: var(--color4);
 }
 
 html, body {
@@ -51,6 +51,7 @@ h3 {
     margin: 0;
     font-size: 24px;
     color: var(--color3);
+    text-align: left;
 }
 
 .main {
@@ -233,12 +234,13 @@ h3 {
 
 .buttons-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
     margin-bottom: 20px;
 }
 
 .button-active, .button-inactive{
-    margin: 0;
+    margin: 7px 3px 0 3px;
     width: 56px;
     height: 56px;
     color: var(--color2);
@@ -271,7 +273,6 @@ h3 {
 }
 
 .hang-0 {
-    position: relative;
     margin-top: 250px;
     width: 175px;
     height: 25px;
@@ -371,7 +372,7 @@ h3 {
     color: var(--color3);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1080px) {
     .main {
         display: block;
     }
@@ -395,7 +396,11 @@ h3 {
     }
 
     h1 {
-        font-size: 36px;
+        font-size: 48px;
+        text-align: center;
+    }
+
+    h3 {
         text-align: center;
     }
 
@@ -408,17 +413,16 @@ h3 {
         display: none;
     }
 
-
     .buttons-row {
         display: flex;
         flex-flow: wrap;
         justify-content: center;
     }
 
-    .button-active, .button-inactive{
+    .button-active, .button-inactive {
         margin: 3px 6px 2px 0;
-        width: 39px;
-        height: 39px;
+        width: 52px;
+        height: 52px;
         font-size:12px;
     }
 
@@ -446,4 +450,15 @@ h3 {
         margin-bottom: 0;
     }
 
+}
+
+@media (max-width: 720px) {
+    h1 {
+        font-size: 32px;
+        text-align: center;
+    }
+    .button-active, .button-inactive {
+        width: 39px;
+        height: 39px;
+    }
 }

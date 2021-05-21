@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
-from hang import first_pattern
+from spel import first_pattern
 import simplejson as json
-
-# Lees data verstuurd door JavaScript
 
 # Bereken te verzenden data
 pattern = first_pattern()

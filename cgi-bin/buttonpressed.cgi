@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from hang import advance
+from spel import advance
 import cgi
 import simplejson as json
 
@@ -14,7 +14,7 @@ expansion = parameters.getvalue('expansion');
 out = advance(pattern, letters, expansion)
 nieuwe_data = {"pattern": out[0], "letters": out[1], "wrong": out[2], "word": out[3]}
 
-# Stuuz2xr antwoord terug
+# Stuur antwoord terug
 print("Content-Type: application/json")
 print() # Lege lijn na headers
 print(json.dumps(nieuwe_data))
